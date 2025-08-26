@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { PlusCircle, Folder, Trash2, LogOut } from "lucide-react";
 import FileUpload from "./FileUpload";
 import { useState,useRef,useEffect } from "react";
+import FolderSidebar from "./FolderSidebar";
 
 export default function Sidebar() {
     const navigate = useNavigate();
@@ -47,7 +48,10 @@ export default function Sidebar() {
                         {/* Dropdown */}
                         {open && (
                             <div className="absolute left-0 mt-2 w-64 rounded-lg shadow-lg bg-white ring-1 ring-black/5 z-20 p-3">
-                                <FileUpload />
+                              <ul>
+                                <li>  <FileUpload /></li>
+                                <li><FolderSidebar/></li>
+                              </ul>
                             </div>
                         )}
                     </div>

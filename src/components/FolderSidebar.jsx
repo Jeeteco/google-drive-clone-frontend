@@ -7,8 +7,10 @@ export default function FolderSidebar({ currentFolder, onSelectFolder, onFolderC
   const [folders, setFolders] = useState([]);
   const [newName, setNewName] = useState("");
 
+  const owner_id=localStorage.getItem("owner_id");
+
   const fetchRootFolders = async () => {
-    const res = await axios.get(`${API}/folders`); // parent=null roots
+    const res = await axios.get(`${API}/folders/getFolder/${owner_id}`); // parent=null roots
     setFolders(res.data);
   };
 

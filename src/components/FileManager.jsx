@@ -149,7 +149,7 @@ const FileManager = () => {
                   download
                   className="hover:text-blue-500"
                 >
-                  <Download size={18} />
+                 
                 </a>
                 <button
                   onClick={() => renameFile(file.id)}
