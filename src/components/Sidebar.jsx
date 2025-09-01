@@ -26,7 +26,7 @@ export default function Sidebar() {
 
     return (
         <div className="h-screen p-4">
-            <aside className="h-9/10 w-56 bg-white shadow-xl p-4 mt-6 flex flex-col gap-4">
+            <aside className="h-9/10 w-56 bg-gray-200/10 rounded  shadow-xl p-4 mt-6 flex flex-col gap-4">
                 <h1
                     onClick={() => navigate("/")}
                     className="text-xl font-extrabold text-sky-600 cursor-pointer mb-6"
@@ -47,8 +47,8 @@ export default function Sidebar() {
 
                         {/* Dropdown */}
                         {open && (
-                            <div className="absolute left-0 mt-2 w-64 rounded-lg shadow-lg bg-white ring-1 ring-black/5 z-20 p-3">
-                              <ul>
+                            <div className="absolute left-0 mt-4 w-64 rounded-lg shadow-lg bg-gray-50 ring-1 ring-black/5 z-20 p-3">
+                              <ul className="space-x-4 space-y-4">
                                 <li>  <FileUpload /></li>
                                 <li><FolderSidebar/></li>
                               </ul>

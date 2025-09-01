@@ -1,25 +1,37 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API = import.meta.env.VITE_BACKEND_URL; 
+import { useNavigate, useNavigation } from "react-router-dom";
 
-export default function FolderSidebar({ currentFolder, onSelectFolder, onFolderCreated }) {
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+export default function FolderSidebar({ currentFolder, onFolderCreated }) {
+
+  const navigate = useNavigate();
+
   const [folders, setFolders] = useState([]);
   const [newName, setNewName] = useState("");
+  const [view, setView] = useState("grid");
 
-  const owner_id=localStorage.getItem("owner_id");
+  const owner_id = localStorage.getItem("owner_id");
 
   const fetchRootFolders = async () => {
-    const res = await axios.get(`${API}/folders/getFolder/${owner_id}`); // parent=null roots
+    const res = await axios.get(`${BACKEND_URL}/folders/getFolder/${owner_id}`); // parent=null roots
     setFolders(res.data);
+    // console.log(res.data);
   };
 
   useEffect(() => {
     fetchRootFolders();
   }, []);
 
+  const onSelectFolder = async (id) => {
+    navigate("/")
+  };
+
   const createFolder = async () => {
-     const access_token = localStorage.getItem("access_token"); //  auth access_token
+    console.log(newName)
+    const access_token = localStorage.getItem("access_token"); //  auth access_token
     // console.log(access_token);
     if (!access_token) {
       alert("Not authenticated. Please login.");
@@ -27,45 +39,40 @@ export default function FolderSidebar({ currentFolder, onSelectFolder, onFolderC
       return;
     }
     if (!newName.trim()) return;
-    await axios.post(`${API}/folders/create`, { name: newName },{
+    await axios.post(`${BACKEND_URL}/folders/create`, { name: newName }, {
       headers: {
         Authorization: `Bearer ${access_token}`, // send access_token
-        "Content-Type": "multipart/form-data"
+        // "Content-Type": "multipart/form-data"
       },
     });
     setNewName("");
+    alert("new folder created Sucessfully ");
     // fetchRootFolders();
     // onFolderCreated?.(); // let parent refetch files if needed
   };
 
-  return (
-    <div className="w-64 p-4 bg-gray-50 border-r">
-      <h2 className="font-semibold mb-3">Folders</h2>
 
-      <div className="flex gap-2 mb-3">
+  return (
+    <div className="  bg-gray-50 ">
+      <h2 className="font-bold mb-3">New Folder</h2>
+      <div>
         <input
-          className="border rounded px-2 py-1 flex-1"
+          className="border w-50 rounded px-2 py-1 flex-1"
           placeholder="New folder"
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
         />
-        <button onClick={createFolder} className="bg-blue-600 text-white px-3 rounded">
+        <button onClick={createFolder} className="bg-blue-600 text-white px-4 py-1 mt-4 rounded-xl">
           Create
         </button>
       </div>
 
-      <ul className="space-y-1">
-        {folders.map(f => (
-          <li key={f._id}>
-            <button
-              className={`w-full text-left px-2 py-1 rounded hover:bg-gray-100 ${currentFolder===f._id ? "bg-blue-100" : ""}`}
-              onClick={() => onSelectFolder(f._id)}
-            >
-              📁 {f.name}
-            </button>
-          </li>
-        ))}
-      </ul>
+
+      
+
     </div>
+
+
+   
   );
 }

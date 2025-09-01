@@ -63,6 +63,32 @@ const Trash = () => {
     alert("file sucessfully restored");
     fetchFiles();
   };
+
+   const deleteFile = async (id) => {
+    const access_token = localStorage.getItem("access_token"); //  auth access_token
+    // console.log(access_token);
+    if (!access_token) {
+      alert("Not authenticated. Please login.");
+      navigate("/login")
+      return;
+    }
+
+    try {
+      // console.log(id);
+      await axios.delete(`${BACKEND_URL}/files/permanent/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`, // send access_token
+          "Content-Type": "multipart/form-data"
+        },
+      });
+      fetchFiles();
+    } catch (error) {
+      console.error(error.message)
+      alert("Plaese Login ");
+      navigate('/login')
+
+    }
+  };
  
 
   return (
@@ -114,13 +140,13 @@ const Trash = () => {
               <p className="truncate font-medium">Size: {file.size} Bytes</p>
 
               <div className="flex justify-between mt-2 text-gray-600">
-                <a
+                {/* <a
                   href={`${BACKEND_URL}${file.filePath}`}
                   download
                   className="hover:text-blue-500"
                 >
                   <Download size={18} />
-                </a>
+                </a> */}
                 <button
                   onClick={() => restoreFile(file.id)}
                   className="hover:text-green-500"
